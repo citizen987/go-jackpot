@@ -12,17 +12,20 @@ type JackpotLogic interface {
 }
 
 type jackpotLogicImpl struct {
-	rng    *rand.Rand
-	minBet int
-	maxBet int
+	rng       *rand.Rand
+	minBet    int
+	maxBet    int
+	baseRange int
 }
 
 func NewJackpotLogic(cfg config.Config) JackpotLogic {
 	src := rand.NewSource(time.Now().UnixNano())
+	baseRange := max(100, cfg.MaxBet*2)
 	return &jackpotLogicImpl{
-		rng:    rand.New(src),
-		minBet: cfg.MinBet,
-		maxBet: cfg.MaxBet,
+		rng:       rand.New(src),
+		minBet:    cfg.MinBet,
+		maxBet:    cfg.MaxBet,
+		baseRange: baseRange,
 	}
 }
 
@@ -33,5 +36,6 @@ func (jl *jackpotLogicImpl) Bet(bet int) bool {
 	if bet < jl.minBet || bet > jl.maxBet {
 		panic(fmt.Sprintf("Bet must be between %d and %d", jl.minBet, jl.maxBet))
 	}
-	return jl.rng.Intn(100)/bet == 0
+	chance := jl.baseRange / bet
+	return jl.rng.Intn(chance) == 0
 }

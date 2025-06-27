@@ -7,7 +7,7 @@ A small HTTP server in Go that exposes a single endpoint to simulate a jackpot d
 
 ## ⚙️ Requirements
 
-- Go 1.20 or higher (latest stable recommended)
+- Go 1.21 or higher (latest stable recommended)
 
 ---
 

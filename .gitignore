@@ -32,4 +32,4 @@ go.work.sum
 .vscode/
 
 # App generated files
-data.jsonl
+jackpot-log.jsonl

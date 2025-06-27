@@ -5,7 +5,7 @@ import requests # pip install requests
 
 url = "http://localhost:8080/jackpot-draw"
 headers = {"Content-Type": "application/json"}
-bet = 1
+bet = 50
 
 if len(sys.argv) > 1:
     try:
