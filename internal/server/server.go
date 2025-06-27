@@ -22,6 +22,13 @@ func (s *Server) Start() {
 }
 
 func (s *Server) handleJackpotDraw(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Printf("Recovered from panic: %v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+		}
+	}()
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return

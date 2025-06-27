@@ -1,16 +1,18 @@
 package main
 
 import (
-	"go-jackpot/internal/logic"
-	"go-jackpot/internal/server"
-	"go-jackpot/internal/service"
-	"go-jackpot/internal/storage"
+	cfg "go-jackpot/internal/config"
+	lgc "go-jackpot/internal/logic"
+	svc "go-jackpot/internal/server"
+	srv "go-jackpot/internal/service"
+	stg "go-jackpot/internal/storage"
 )
 
 func main() {
-	logic := logic.NewJackpotLogic()
-	storage := storage.NewStorage("jackpot-log.jsonl")
-	service := service.NewJackpotService(logic, storage)
-	server := server.NewServer(service)
+	config := cfg.LoadConfig("config/config.json")
+	logic := lgc.NewJackpotLogic(config)
+	storage := stg.NewStorage("jackpot-log.jsonl")
+	service := srv.NewJackpotService(logic, storage)
+	server := svc.NewServer(service)
 	server.Start()
 }
