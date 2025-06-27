@@ -9,7 +9,7 @@ import (
 
 func main() {
 	logic := logic.NewJackpotLogic()
-	storage := storage.NewStorage("data.jsonl")
+	storage := storage.NewStorage("jackpot-log.jsonl")
 	service := service.NewJackpotService(logic, storage)
 	server := server.NewServer(service)
 	server.Start()
