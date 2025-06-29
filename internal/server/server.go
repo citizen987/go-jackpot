@@ -1,24 +1,53 @@
 package server
 
 import (
+	"context"
 	"encoding/json"
 	"go-jackpot/internal/service"
 	"log"
 	"net/http"
+	"time"
 )
 
 type Server struct {
-	service service.JackpotService
+	service    service.JackpotService
+	httpServer *http.Server
 }
 
 func NewServer(service service.JackpotService) *Server {
-	return &Server{service: service}
+	mux := http.NewServeMux()
+	server := &Server{
+		service: service,
+		httpServer: &http.Server{
+			Addr:    ":8080",
+			Handler: mux,
+		},
+	}
+	mux.HandleFunc("/jackpot-draw", server.handleJackpotDraw)
+	return server
 }
 
 func (s *Server) Start() {
-	http.HandleFunc("/jackpot-draw", s.handleJackpotDraw)
 	log.Println("Server is running on http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	err := s.httpServer.ListenAndServe()
+	if err != nil && err != http.ErrServerClosed {
+		panic("Error starting server: " + err.Error())
+	}
+}
+
+func (s *Server) StartAsync() {
+	go func() {
+		s.Start()
+	}()
+}
+
+func (s *Server) Stop() {
+	log.Print("Shutting down server...")
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	if err := s.httpServer.Shutdown(ctx); err != nil {
+		log.Printf("Error shutting down server: %v", err)
+	}
 }
 
 func (s *Server) handleJackpotDraw(w http.ResponseWriter, r *http.Request) {

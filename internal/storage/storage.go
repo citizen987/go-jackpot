@@ -8,4 +8,5 @@ type JackpotLog struct {
 
 type Storage interface {
 	Save(data JackpotLog)
+	Close()
 }

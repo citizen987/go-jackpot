@@ -23,6 +23,9 @@ func (m *mockStorage) Save(data storage.JackpotLog) {
 	m.savedLog = &data
 }
 
+func (m *mockStorage) Close() {
+}
+
 func TestCheckWon_CallsLogicAndStorage(t *testing.T) {
 	logicMock := &mockJackpotLogic{betResult: true}
 	storageMock := &mockStorage{}

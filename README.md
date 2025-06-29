@@ -3,6 +3,8 @@ Jackpot Probability Calculator
 
 A small HTTP server in Go that exposes a single endpoint to simulate a jackpot draw. Each request represents a bet that may win or not, based on a probabilistic logic.
 
+https://github.com/citizen987/go-jackpot.git
+
 ---
 
 ## ⚙️ Requirements
@@ -18,6 +20,8 @@ Make sure Go is installed:
 ```bash
 go version
 ```
+
+If not installed, download it from https://go.dev/dl/
 
 ---
 
@@ -45,7 +49,7 @@ Run all tests in the project with:
 go test ./... -v
 ```
 
-This will execute unit tests for all modules: logic, service, server and storage.
+This will execute unit tests for all modules.
 
 ---
 
